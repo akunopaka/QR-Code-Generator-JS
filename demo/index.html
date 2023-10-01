@@ -55,6 +55,10 @@
 			<div class="qrcode qrcode-svg" id="qrcodeSVG"></div>
 			<button class="qrcode-download-btn qrcode-download-btn-action" id="qrcode_download_svg">download svg</button>
 		</div>
+
+		<div id="img_preview">
+
+		</div>
 	</div>
 </div>
 
@@ -95,15 +99,16 @@
 
 		// ====== Logo
 		logo: "../demo/img/logos/AS-logo-white-square-small.png", // Relative address, relative to `easy.qrcode.min.js`
+		logo: "../demo/img/logos/360_Master_Logo_RGB.svg", // Relative address, relative to `easy.qrcode.min.js`
 		// logo: "",
 		// logoWidth: 90, // fixed logo width. default is `width/3.5`
 		// logoHeight: 90, // fixed logo height. default is `heigth/3.5`
-		// logoMaxWidth: 22, // Maximum logo width. if set will ignore `logoWidth` value
+		logoMaxWidth: 42, // Maximum logo width. if set will ignore `logoWidth` value
 		// logoMaxHeight: undefined, // Maximum logo height. if set will ignore `logoHeight` value
-		// logoBackgroundColor: '#5ae36d', // Logo backgroud color, Invalid when `logBgTransparent` is true; default is '#ffffff'
+		logoBackgroundColor: '#ff9818', // Logo backgroud color, Invalid when `logBgTransparent` is true; default is '#ffffff'
 		// logoBackgroundTransparent: true, // Whether use transparent image, default is false
-		// logoPadding: 8, // default is 0
-		// logoBackgroundRadius: 5, // default is 0
+		logoPadding: 8, // default is 0
+		logoBackgroundRadius: 15, // default is 0
 
 
 		// ====== Backgroud Image
@@ -168,7 +173,7 @@
 		// tooltip: true, // Whether set the QRCode Text as the title attribute value of the QRCode div
 
 		// ==== CORS
-		crossOrigin: 'anonymous', // null,  String which specifies the CORS setting to use when retrieving the image. null means that the crossOrigin attribute is not set.
+		// crossOrigin: "Anonymous", // null,  String which specifies the CORS setting to use when retrieving the image. null means that the crossOrigin attribute is not set.
 
 		// =====  Drawing method
 		drawer: 'canvas', // Which drawing method to use. 'canvas', 'svg'. default is 'canvas'

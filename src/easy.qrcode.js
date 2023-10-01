@@ -1334,7 +1334,6 @@
 					arguments[3] *= factor;
 					arguments[4] *= factor;
 				}
-
 				drawImage.apply(this, arguments);
 			};
 		}
@@ -1440,9 +1439,8 @@
 			this._elCanvas.width = _htOption.width + _htOption.quietZone * 2;
 			this._elCanvas.height = _htOption.height + _htOption.quietZone * 2;
 
+			// SVG
 			if (this._htOption.drawer != 'canvas') {
-				// _elImage.style.display = "none";
-				// } else {
 				this._oContext = new C2S(this._elCanvas.width, this._elCanvas.height);
 			}
 			this.clear();
@@ -1725,7 +1723,6 @@
 						if (_htOption.logoMaxWidth && nw <= imgContainerW) {
 							imgContainerW = nw;
 						}
-
 						if (_htOption.logoMaxHeight && nh <= imgContainerH) {
 							imgContainerH = nh;
 						}
@@ -1736,9 +1733,7 @@
 					}
 
 					var imgContainerX = (_htOption.width + _htOption.quietZone * 2 - imgContainerW) / 2;
-					var imgContainerY = (_htOption.height + _htOption.titleHeight + _htOption
-							.quietZone *
-						2 - imgContainerH) / 2;
+					var imgContainerY = (_htOption.height + _htOption.titleHeight + _htOption.quietZone * 2 - imgContainerH) / 2;
 
 					var imgScale = Math.min(imgContainerW / nw, imgContainerH / nh);
 					var imgW = nw * imgScale;
@@ -1748,10 +1743,7 @@
 						imgContainerW = imgW;
 						imgContainerH = imgH;
 						imgContainerX = (_htOption.width + _htOption.quietZone * 2 - imgContainerW) / 2;
-						imgContainerY = (_htOption.height + _htOption.titleHeight + _htOption
-								.quietZone *
-							2 - imgContainerH) / 2;
-
+						imgContainerY = (_htOption.height + _htOption.titleHeight + _htOption.quietZone * 2 - imgContainerH) / 2;
 					}
 
 					// Did Not Use Transparent Logo Image
@@ -1774,34 +1766,64 @@
 					_oContext.imageSmoothingQuality = imageSmoothingQuality;
 					drawQuietZoneColor();
 					_this._bIsPainted = true;
-
 					_this.makeImage();
 				}
 
 
 				if (_htOption.logo) {
-					// Logo Image
 					var img = new Image();
-
 					var _this = this;
 
-
-					img.onload = function () {
-						generateLogoImg(img);
-					}
-
 					img.onerror = function (e) {
-						console.error(e)
-					}
+						console.error(e);
+					};
 
 					// img.crossOrigin="Anonymous";
 					if (_htOption.crossOrigin != null) {
 						img.crossOrigin = _htOption.crossOrigin;
 					}
-					img.originalSrc = _htOption.logo;
-					img.src = _htOption.logo;
 
-				} else {
+					const setImgSrc = (src) => {
+						img.originalSrc = src;
+						img.src = src;
+						img.onload = function () {
+							generateLogoImg(img);
+						};
+					};
+
+					// if _htOption.logo not base64 data, mean it is a url local(with relative path) or remote url with http or https,
+					// making base64 data for jpg and png or add svg inline
+					if (_htOption.logo.indexOf('data:image') != 0) {
+						// Check if it's an SVG by looking at the file extension
+						if (_htOption.logo.endsWith('.svg')) {
+							// Fetch SVG content and set it as Data URL
+							fetch(_htOption.logo)
+								.then(response => response.text())
+								.then(data => {
+									_htOption.logo = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(data);
+									setImgSrc(_htOption.logo);
+								})
+								.catch(error => console.error(error));
+						} else {
+							// Handle JPEG and PNG
+							var xhr = new XMLHttpRequest();
+							xhr.open("GET", _htOption.logo, true);
+							xhr.responseType = "blob";
+							xhr.onload = function() {
+								var reader = new FileReader();
+								reader.onloadend = function() {
+									_htOption.logo = reader.result;
+									setImgSrc(_htOption.logo);
+								}
+								reader.readAsDataURL(xhr.response);
+							};
+							xhr.send();
+						}
+					} else {
+						setImgSrc(_htOption.logo);
+					}
+				}
+				else {
 					drawQuietZoneColor();
 					this._bIsPainted = true;
 					this.makeImage();
@@ -2009,7 +2031,7 @@
 			drawer: 'canvas', // Drawing method: canvas, svg(Chrome, FF, IE9+)
 
 			// ==== CORS
-			crossOrigin: null, // String which specifies the CORS setting to use when retrieving the image. null means that the crossOrigin attribute is not set.
+			crossOrigin: "Anonymous", // String which specifies the CORS setting to use when retrieving the image. null means that the crossOrigin attribute is not set.
 
 			// UTF-8 without BOM
 			utf8WithoutBOM: true
