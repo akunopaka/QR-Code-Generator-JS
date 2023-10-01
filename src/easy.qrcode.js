@@ -1450,8 +1450,9 @@
 			var _oContext = this._oContext;
 			_oContext.lineWidth = 0;
 			_oContext.fillStyle = _htOption.colorLight;
+			_oContext.convasFillStyle = _htOption.canvasColor;
 			// _oContext.fillRect(0, 0, this._elCanvas.width, this._elCanvas.height);
-			_oContext.roundRect(0, 0, this._elCanvas.width, this._elCanvas.height, _htOption.canvasBorderRadius);
+			_oContext.roundRect(0, 0, this._elCanvas.width, this._elCanvas.height, _htOption.canvasBorderRadius, _htOption.canvasColor);
 
 			// _oContext.clearRect(_htOption.quietZone, _htOption.quietZone, _htOption.width, _htOption.titleHeight);
 
@@ -1662,12 +1663,15 @@
 				}
 
 				if (_htOption.title) {
-
-					_oContext.fillStyle = _htOption.titleBackgroundColor;
-					_oContext.fillRect(_htOption.quietZone, _htOption.quietZone, _htOption.width, _htOption.titleHeight);
-
+					if(_htOption.titleBackgroundColor){
+						_oContext.fillStyle = _htOption.titleBackgroundColor;
+						_oContext.fillRect(_htOption.quietZone, _htOption.quietZone, _htOption.width, _htOption.titleHeight);
+					}
 					_oContext.font = _htOption.titleFont;
-					_oContext.fillStyle = _htOption.titleColor;
+					_oContext.fillStyle = _htOption.colorDark;
+					if(_htOption.titleColor){
+						_oContext.fillStyle = _htOption.titleColor;
+					}
 					_oContext.textAlign = 'center';
 					_oContext.fillText(_htOption.title, this._elCanvas.width / 2, +_htOption.quietZone +
 						_htOption.titleTop);
@@ -1675,7 +1679,12 @@
 
 				if (_htOption.subTitle) {
 					_oContext.font = _htOption.subTitleFont;
-					_oContext.fillStyle = _htOption.subTitleColor;
+					_oContext.fillStyle = _htOption.colorDark;
+
+					if(_htOption.subTitleColor){
+						_oContext.fillStyle = _htOption.subTitleColor;
+					}
+
 					_oContext.fillText(_htOption.subTitle, this._elCanvas.width / 2, +_htOption
 							.quietZone +
 						_htOption.subTitleTop);
@@ -1754,7 +1763,7 @@
 
 						// _oContext.fillRect(imgContainerX, imgContainerY, imgContainerW, imgContainerH);
 						// _oContext.fillRect(imgContainerX - _htOption.logoPadding, imgContainerY - _htOption.logoPadding, imgContainerW + _htOption.logoPadding * 2, imgContainerH + _htOption.logoPadding * 2);
-						_oContext.roundRect(imgContainerX - _htOption.logoPadding, imgContainerY - _htOption.logoPadding, imgContainerW + _htOption.logoPadding * 2, imgContainerH + _htOption.logoPadding * 2, _htOption.logoBackgroundRadius);
+						_oContext.roundRect(imgContainerX - _htOption.logoPadding, imgContainerY - _htOption.logoPadding, imgContainerW + _htOption.logoPadding * 2, imgContainerH + _htOption.logoPadding * 2, _htOption.logoBackgroundRadius, _htOption.logoBackgroundColor);
 					}
 					var imageSmoothingQuality = _oContext.imageSmoothingQuality;
 					var imageSmoothingEnabled = _oContext.imageSmoothingEnabled;
@@ -1935,14 +1944,14 @@
 
 			title: "",
 			titleFont: "normal normal bold 16px Arial",
-			titleColor: "#000000",
-			titleBackgroundColor: "#ffffff",
+			titleColor: undefined, // if not set, the defaut is `colorDark`
+			titleBackgroundColor: undefined, // "#ffffff"
 			titleHeight: 0, // Title Height, Include subTitle
 			titleTop: 30, // draws y coordinates. default is 30
 
 			subTitle: "",
 			subTitleFont: "normal normal normal 14px Arial",
-			subTitleColor: "#4F4F4F",
+			subTitleColor: undefined, // if not set, the defaut is `colorDark`
 			subTitleTop: 60, // draws y coordinates. default is 0
 
 			logo: undefined,
@@ -2266,7 +2275,7 @@
 // Extend the CanvasRenderingContext2D prototype with the roundRect method
 CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, radii, fillColor) {
 	// set originalFillStyle color fillcolor if exists or this.fillColor if exist or "#ffffff";
-	let originalFillStyle = fillColor || this.fillStyle || "#ffffff";
+	let originalFillStyle = fillColor || "#ffffff";
 
 	// Begin a path
 	this.beginPath();

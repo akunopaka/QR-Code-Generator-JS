@@ -793,7 +793,10 @@
     /**
      * adds a rounded rectangle element
      */
-    ctx.prototype.roundRect = function (x, y, width, height, radius) {
+    ctx.prototype.roundRect = function (x, y, width, height, radius, fillColor){
+        if(fillColor){
+            this.fillStyle = fillColor;
+        }
         var rect, parent;
         rect = this.__createElement("rect", {
             x : x,
@@ -807,6 +810,7 @@
         parent.appendChild(rect);
         this.__currentElement = rect;
         this.__applyStyleToCurrentElement("fill");
+
     }
 
     /**
