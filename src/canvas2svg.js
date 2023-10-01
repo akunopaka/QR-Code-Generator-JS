@@ -93,7 +93,6 @@
             '80f,rlm,80j,ndash,80k,mdash,80o,lsquo,80p,rsquo,80q,sbquo,80s,ldquo,80t,rdquo,80u,bdquo,810,dagger,' +
             '811,Dagger,81g,permil,81p,lsaquo,81q,rsaquo,85c,euro', 32);
 
-
     //Some basic mappings for attributes and default values.
     STYLES = {
         "strokeStyle":{
