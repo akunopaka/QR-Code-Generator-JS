@@ -1939,8 +1939,10 @@
 			dotScaleAO: undefined, // For alignment outer block, must be greater than 0, less than or equal to 1. default is 1
 			dotScaleAI: undefined, // For alignment inner block, must be greater than 0, less than or equal to 1. default is 1
 
-            quietZone: 0,
-            quietZoneColor: "rgba(0,0,0,0)",
+			canvasColor: undefined,
+			canvasBorderRadius: 0, // Set canvas border-radius. default is 0.
+			quietZone: 0,
+			quietZoneColor: "rgba(0,0,0,0)",
 
 			title: "",
 			titleFont: "normal normal bold 16px Arial",

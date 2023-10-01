@@ -59,13 +59,165 @@
 </div>
 
 
-
-
-<script defer type="text/javascript" src="../src/canvas2svg.js"></script>
-<script defer type="text/javascript" src="../src/easy.qrcode.js"></script>
+<script type="text/javascript" src="../src/canvas2svg.js"></script>
+<script type="text/javascript" src="../src/easy.qrcode.js"></script>
 <!--<script defer type="text/javascript" src="../dist/easy.qrcode.min.js"></script>-->
-<!-- script config -->
+
 <script defer type="text/javascript">
+	<!-- config -->
+	let qrcode_options_object = {
+		// ====== Basic
+		text: "qrcode text",
+
+		// width: 512,
+		// height: 512,
+		colorDark: "#0606de", // BG
+		colorLight: "#ffffff", // PIXEL
+		correctLevel: QRCode.CorrectLevel.H, // L, M, Q, H
+
+		// ====== dotScale
+		// dotScale: 1, // For body block, must be greater than 0, less than or equal to 1. default is 1
+
+		// dotScaleTiming: 0.4, // Dafault for timing block , must be greater than 0, less than or equal to 1. default is 1
+		// dotScaleTiming_H: undefined, // For horizontal timing block, must be greater than 0, less than or equal to 1. default is 1
+		// dotScaleTiming_V: undefined, // For vertical timing block, must be greater than 0, less than or equal to 1. default is 1
+
+		// dotScaleA: 0.6, // Dafault for alignment block, must be greater than 0, less than or equal to 1. default is 1
+		// dotScaleAO:  0.5, // For alignment outer block, must be greater than 0, less than or equal to 1. default is 1
+		// dotScaleAI: 0.9, // For alignment inner block, must be greater than 0, less than or equal to 1. default is 1
+
+		// Canvas
+		canvasBorderRadius: 8,
+		canvasColor: "#ff9818",
+
+		// ====== Quiet Zone
+		quietZone: 10,
+		// quietZoneColor: "rgba(233,120,0,0.6)",
+
+		// ====== Logo
+		logo: "../demo/img/logos/AS-logo-white-square-small.png", // Relative address, relative to `easy.qrcode.min.js`
+		// logo: "",
+		// logoWidth: 90, // fixed logo width. default is `width/3.5`
+		// logoHeight: 90, // fixed logo height. default is `heigth/3.5`
+		// logoMaxWidth: 22, // Maximum logo width. if set will ignore `logoWidth` value
+		// logoMaxHeight: undefined, // Maximum logo height. if set will ignore `logoHeight` value
+		// logoBackgroundColor: '#5ae36d', // Logo backgroud color, Invalid when `logBgTransparent` is true; default is '#ffffff'
+		// logoBackgroundTransparent: true, // Whether use transparent image, default is false
+		// logoPadding: 8, // default is 0
+		// logoBackgroundRadius: 5, // default is 0
+
+
+		// ====== Backgroud Image
+		// backgroundImage: '', // Background Image
+		// backgroundImageAlpha: 1, // Background image transparency, value between 0 and 1. default is 1.
+		// autoColor: false, // Automatic color adjustment(for data block)
+		// autoColorDark: "rgba(0, 0, 0, .6)", // Automatic color: dark CSS color
+		// autoColorLight: "rgba(255, 255, 255, .7)", // Automatic color: light CSS color
+
+		// ====== Colorful
+		// === Posotion Pattern(Eye) Color
+		//
+		// PO: '#e1622f', // Global Posotion Outer color. if not set, the defaut is `colorDark`
+		// PI: '#aa5b71', // Global Posotion Inner color. if not set, the defaut is `colorDark`
+		// PO_TL:'#46f10d', // Posotion Outer color - Top Left
+		// PI_TL:'', // Posotion Inner color - Top Left
+		// PO_TR:'', // Posotion Outer color - Top Right
+		// PI_TR:'', // Posotion Inner color - Top Right
+		// PO_BL:'', // Posotion Outer color - Bottom Left
+		// PI_BL:'', // Posotion Inner color - Bottom Left
+
+		// === Alignment Color
+		// AO: '#0df1de', // Alignment Outer. if not set, the defaut is `colorDark`
+		// AI: '#e75bbe', // Alignment Inner. if not set, the defaut is `colorDark`
+
+		// === Timing Pattern Color
+		// timing: '#e1622f', // Global Timing color. if not set, the defaut is `colorDark`
+		// timing_H: '#ded032', // Horizontal timing color
+		// timing_V: '#94f5e3', // Vertical timing color
+
+		// ====== Title
+		title: 'QR Title Title', // content
+		titleFont: "normal normal bold 21px Roboto", //font. default is "bold 16px Arial"
+		titleColor: "#60005e", // color. default is "#000"
+		// titleBackgroundColor: "rgba(255,255,255,0.39)", // background color. default is "#fff"
+		titleHeight: 40, // height, including subTitle. default is 0
+		titleTop: 25, // draws y coordinates. default is 30
+
+		// ====== SubTitle
+		// subTitle: 'QR subTitle', // content
+		// subTitleFont: "normal normal normal 14px Arial", // font. default is "14px Arial"
+		// subTitleColor: "#004284", // color. default is "4F4F4F"
+		// subTitleTop: 40, // draws y coordinates. default is 0
+
+		// ===== Event Handler
+		/*
+		onRenderingStart: undefined,
+		onRenderingEnd: undefined,
+		*/
+
+		// ===== Versions
+		/*
+		version: 0, // The symbol versions of QR Code range from Version 1 to Version 40. default 0 means automatically choose the closest version based on the text length.
+		*/
+
+		// ===== Binary(hex) data mode
+		/*
+		binary: false, // Whether it is binary mode, default is text mode.
+		*/
+
+		// ===== Tooltip
+		// tooltip: true, // Whether set the QRCode Text as the title attribute value of the QRCode div
+
+		// ==== CORS
+		crossOrigin: 'anonymous', // null,  String which specifies the CORS setting to use when retrieving the image. null means that the crossOrigin attribute is not set.
+
+		// =====  Drawing method
+		drawer: 'canvas', // Which drawing method to use. 'canvas', 'svg'. default is 'canvas'
+
+		// =====  UTF-8 without BOM
+		/*
+		utf8WithoutBOM: true
+		*/
+
+		onRenderingEnd: function (options, dataURL) {
+			// Display  download button after the QRCode is rendered.
+			let downloadBtn = options._element.parentNode.querySelector('.qrcode-download-btn-action');
+			if (downloadBtn) {
+				downloadBtn.style.display = 'block';
+
+				// Add an event handler for the .qrcode-download-btn-action element
+				downloadBtn.addEventListener("click", function() {
+					// Get the ID from the nearest .qrcode element
+					const qrcodeId = this.previousElementSibling.id; // Get the ID of the nearest .qrcode element
+
+					let qrcodeObj = qrcodeSVG;
+					if (qrcodeId === 'qrcodeCanvas') {
+						qrcodeObj = qrcodeCanvas;
+					}
+
+					downloadQRcode(qrcodeObj);
+				});
+			}
+		}
+	}
+	let qrcodeCanvas;
+	let qrcodeSVG;
+
+	function downloadQRcode(qrcode) {
+		// Download the png image or svg file
+		const qrCodeFileName = 'qrcode' + new Date().getTime();
+		qrcode.download(qrCodeFileName);
+	}
+
+	// DOM Ready
+	document.addEventListener("DOMContentLoaded", function (event) {
+		// Create QRCode Object
+		qrcodeCanvas = new QRCode(document.getElementById("qrcodeCanvas"), qrcode_options_object);
+		// set drawer to svg
+		qrcode_options_object.drawer = 'svg';
+		qrcodeSVG = new QRCode(document.getElementById("qrcodeSVG"), qrcode_options_object);
+
+	});
 
 </script>
 </body>
