@@ -3,7 +3,7 @@
  * 
  * Cross-browser QRCode generator for pure javascript. Support Canvas, SVG and Table drawing methods. Support Dot style, Logo, Background image, Colorful, Title etc. settings. Support Angular, Vue.js, React, Next.js, Svelte framework. Support binary(hex) data mode.(Running with DOM on client side)
  * 
- * Version 4.5.0
+ * Version 4.5.0 - modified by akunopaka
  * 
  * @author [ inthinkcolor@gmail.com ]
  * 
@@ -19,26 +19,18 @@
  */
 ;
 (function() {
-
-    // 启用严格模式
     "use strict";
 
-    // 自定义局部 undefined 变量
     var undefined;
 
-    /** Node.js global 检测. */
     var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
 
-    /** `self` 变量检测. */
     var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
 
-    /** 全局对象检测. */
     var root = freeGlobal || freeSelf || Function('return this')();
 
-    /** `exports` 变量检测. */
     var freeExports = typeof exports == 'object' && exports && !exports.nodeType && exports;
 
-    /** `module` 变量检测. */
     var freeModule = freeExports && typeof module == 'object' && module && !module.nodeType && module;
 
     var _QRCode = root.QRCode;

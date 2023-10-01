@@ -10,22 +10,20 @@ module.exports = function(grunt) {
 			options: {
 				banner: 
 `/**
- * EasyQRCodeJS
+ * EasyQRCodeJS+
  * 
  * Cross-browser QRCode generator for pure javascript. Support Canvas, SVG and Table drawing methods. Support Dot style, Logo, Background image, Colorful, Title etc. settings. Support Angular, Vue.js, React, Next.js, Svelte framework. Support binary(hex) data mode.(Running with DOM on client side)
  * 
- * Version <%=pkg.version %>
+ * Version <%=pkg.version %>+  modified by akunopaka (<%= grunt.template.today("yyyy-mm-dd") %>)
  * 
  * @author [ inthinkcolor@gmail.com ]
+ * modified by akunopaka
  * 
  * @see https://github.com/ushelp/EasyQRCodeJS 
- * @see http://www.easyproject.cn/easyqrcodejs/tryit.html
- * @see https://github.com/ushelp/EasyQRCodeJS-NodeJS
+ * @see https://github.com/akunopaka/QR-Code-Generator-JS/
  * 
  * Copyright 2017 Ray, EasyProject
  * Released under the MIT license
- * 
- * [Support AMD, CMD, CommonJS/Node.js]
  * 
  */`
 			},
