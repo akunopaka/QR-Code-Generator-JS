@@ -4,14 +4,55 @@
 	<meta charset="UTF-8">
 	<title>QR Code Generator - Test</title>
 	<style>
-		.qrcode-download-btn{
-			display: none;
+		.wrapper{
+			max-width: 600px;
+			height: 100vh;
 		}
+		.row{
+			display: flex;
+			flex-direction: row;
+			justify-content: space-around;
+		}
+		.col{
+			display: flex;
+			flex-direction: column;
+			justify-content: space-around;
+        }
+		.qrcode-svg,
+        .qrcode-canvas {
+			width: 270px;
+			height: 100%;
+		}
+        .qrcode-canvas canvas {
+			max-width: 100%;
+			max-height: 100%;
+		}
+
+		h3{
+			text-align: center;
+			font-size: 1.5em;
+		}
+        .qrcode-download-btn {
+            display: none;
+        }
 	</style>
 </head>
 <body>
-<div class="qrcode" id="qrcode"></div>
-<button class="qrcode-download-btn" id="qrcode_download" onclick="downloadQRcode()">download</button>
+<div class="wrapper">
+	<div class="row">
+		<div class="col">
+			<h3>Canvas</h3>
+			<div class="qrcode qrcode-canvas" id="qrcodeCanvas"></div>
+			<button class="qrcode-download-btn qrcode-download-btn-action" id="qrcode_download_png">download png</button>
+		</div>
+		<div class="col">
+			<h3>SVG</h3>
+			<div class="qrcode qrcode-svg" id="qrcodeSVG"></div>
+			<button class="qrcode-download-btn qrcode-download-btn-action" id="qrcode_download_svg">download svg</button>
+		</div>
+	</div>
+</div>
+
 
 
 

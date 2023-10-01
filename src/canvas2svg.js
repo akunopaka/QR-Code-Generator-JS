@@ -255,8 +255,9 @@
         this.__root.setAttribute("version", 1.1);
         this.__root.setAttribute("xmlns", "http://www.w3.org/2000/svg");
         this.__root.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xlink", "http://www.w3.org/1999/xlink");
-        this.__root.setAttribute("width", this.width);
-        this.__root.setAttribute("height", this.height);
+        // this.__root.setAttribute("width", this.width);
+        // this.__root.setAttribute("height", this.height);
+        this.__root.setAttribute("viewBox", "0 0 " + this.width + " " + this.height);
 
         //make sure we don't generate the same ids in defs
         this.__ids = {};
@@ -788,6 +789,25 @@
         this.__currentElement = rect;
         this.__applyStyleToCurrentElement("fill");
     };
+
+    /**
+     * adds a rounded rectangle element
+     */
+    ctx.prototype.roundRect = function (x, y, width, height, radius) {
+        var rect, parent;
+        rect = this.__createElement("rect", {
+            x : x,
+            y : y,
+            rx : radius,
+            ry : radius,
+            width : width,
+            height : height
+        }, true);
+        parent = this.__closestGroupOrSvg();
+        parent.appendChild(rect);
+        this.__currentElement = rect;
+        this.__applyStyleToCurrentElement("fill");
+    }
 
     /**
      * Draws a rectangle with no fill
