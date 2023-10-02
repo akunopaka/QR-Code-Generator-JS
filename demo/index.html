@@ -11,7 +11,7 @@
 			background-color: #c0c0c0;
 		}
 		.wrapper{
-			max-width: 600px;
+			max-width: 900px;
 			height: 100vh;
 		}
 		.row{
@@ -26,7 +26,7 @@
         }
 		.qrcode-svg,
         .qrcode-canvas {
-			width: 270px;
+			width: 350px;
 			height: 100%;
 		}
         .qrcode-canvas canvas {
@@ -70,10 +70,10 @@
 	<!-- config -->
 	let qrcode_options_object = {
 		// ====== Basic
-		text: "qrcode text",
+		text: "http://localhost:63342/QR-Code-Generator-JS/demo/index.html?_ijt=14e74cbe2eufj4slritvkge1ts&_ij_reload=RELOAD_ON_SAVE",
 
-		// width: 512,
-		// height: 512,
+		width: 512,
+		height: 512,
 		colorDark: "#0606de", // BG
 		colorLight: "#ffffff", // PIXEL
 		correctLevel: QRCode.CorrectLevel.H, // L, M, Q, H
@@ -90,11 +90,11 @@
 		// dotScaleAI: 0.9, // For alignment inner block, must be greater than 0, less than or equal to 1. default is 1
 
 		// Canvas
-		canvasBorderRadius: 8,
+		canvasBorderRadius: 12,
 		canvasColor: "#ff9818",
 
 		// ====== Quiet Zone
-		quietZone: 10,
+		quietZone: 20,
 		// quietZoneColor: "rgba(233,120,0,0.6)",
 
 		// ====== Logo
@@ -103,7 +103,7 @@
 		// logo: "",
 		// logoWidth: 90, // fixed logo width. default is `width/3.5`
 		// logoHeight: 90, // fixed logo height. default is `heigth/3.5`
-		logoMaxWidth: 42, // Maximum logo width. if set will ignore `logoWidth` value
+		logoMaxWidth: 90, // Maximum logo width. if set will ignore `logoWidth` value
 		// logoMaxHeight: undefined, // Maximum logo height. if set will ignore `logoHeight` value
 		logoBackgroundColor: '#ff9818', // Logo backgroud color, Invalid when `logBgTransparent` is true; default is '#ffffff'
 		// logoBackgroundTransparent: true, // Whether use transparent image, default is false
@@ -141,17 +141,26 @@
 
 		// ====== Title
 		title: 'QR Title Title', // content
-		titleFont: "normal normal bold 21px Roboto", //font. default is "bold 16px Arial"
-		titleColor: "#60005e", // color. default is "#000"
+		titleFont: "normal normal bold 32px Roboto", //font. default is "bold 16px Arial"
+		titleColor: "#4f021e", // color. default is "#000"
 		// titleBackgroundColor: "rgba(255,255,255,0.39)", // background color. default is "#fff"
-		titleHeight: 40, // height, including subTitle. default is 0
-		titleTop: 25, // draws y coordinates. default is 30
+		titleHeight: 64, // height, including subTitle. default is 0
+		titleTop: 36, // draws y coordinates. default is 30
 
 		// ====== SubTitle
 		// subTitle: 'QR subTitle', // content
 		// subTitleFont: "normal normal normal 14px Arial", // font. default is "14px Arial"
 		// subTitleColor: "#004284", // color. default is "4F4F4F"
 		// subTitleTop: 40, // draws y coordinates. default is 0
+
+		// ====== Bottom Label
+		label: 'QR Label', // content
+		labelFont: "normal normal bold 32px Roboto", // font. default is "16px Arial"
+		labelColor: "#ffffff", // color. default is "#000"
+		labelHeight: 164, // height, including subTitle. default is 0
+		marginTop: 24,
+		// labelBackgroundColor: "rgba(108,66,159,0.86)", // background color. default is "#fff"
+
 
 		// ===== Event Handler
 		/*

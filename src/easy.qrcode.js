@@ -1423,7 +1423,7 @@
 
 			var nCount = oQRCode.getModuleCount();
 			var nWidth = Math.round(_htOption.width / nCount);
-			var nHeight = Math.round((_htOption.height - _htOption.titleHeight) / nCount);
+			var nHeight = Math.round((_htOption.height - _htOption.titleHeight - _htOption.labelHeight) / nCount);
 			if (nWidth <= 1) {
 				nWidth = 1;
 			}
@@ -1432,7 +1432,7 @@
 			}
 
 			_htOption.width = nWidth * nCount;
-			_htOption.height = nHeight * nCount + _htOption.titleHeight;
+			_htOption.height = nHeight * nCount + _htOption.titleHeight + _htOption.labelHeight;
 
 			_htOption.quietZone = Math.round(_htOption.quietZone);
 
@@ -1606,48 +1606,31 @@
 							// Is eye
 							bIsDark = eye.isDark;
 
-
-							_oContext.fillRect(nLeft + nWidth * (1 - nowDotScale) / 2, _htOption
-									.titleHeight +
-								nTop + nHeight * (1 -
-									nowDotScale) / 2, nWidth * nowDotScale, nHeight *
-								nowDotScale);
+							_oContext.fillRect( nLeft + nWidth * (1 - nowDotScale) / 2,
+												_htOption.titleHeight + nTop + nHeight * (1 - nowDotScale) / 2,
+												nWidth * nowDotScale,
+												nHeight * nowDotScale);
 
 						} else {
-
 							if (row == 6) {
 								// Timing Pattern
 
 								nowDotScale = _htOption.dotScaleTiming_H;
 
-								_oContext.fillRect(nLeft + nWidth * (1 - nowDotScale) / 2, _htOption
-										.titleHeight +
-									nTop + nHeight * (1 -
-										nowDotScale) / 2, nWidth * nowDotScale, nHeight *
-									nowDotScale);
+								_oContext.fillRect(nLeft + nWidth * (1 - nowDotScale) / 2, _htOption.titleHeight + nTop + nHeight * (1 - nowDotScale) / 2, nWidth * nowDotScale, nHeight * nowDotScale);
 							} else if (col == 6) {
 								// Timing Pattern
 								nowDotScale = _htOption.dotScaleTiming_V;
 
-								_oContext.fillRect(nLeft + nWidth * (1 - nowDotScale) / 2, _htOption
-										.titleHeight +
-									nTop + nHeight * (1 -
-										nowDotScale) / 2, nWidth * nowDotScale, nHeight *
-									nowDotScale);
+								_oContext.fillRect(nLeft + nWidth * (1 - nowDotScale) / 2, _htOption.titleHeight + nTop + nHeight * (1 - nowDotScale) / 2, nWidth * nowDotScale, nHeight * nowDotScale);
 							} else {
 
 								if (_htOption.backgroundImage) {
 
-									_oContext.fillRect(nLeft + nWidth * (1 - nowDotScale) / 2,
-										_htOption.titleHeight + nTop + nHeight * (1 -
-											nowDotScale) / 2, nWidth * nowDotScale, nHeight *
-										nowDotScale);
+									_oContext.fillRect(nLeft + nWidth * (1 - nowDotScale) / 2, _htOption.titleHeight + nTop + nHeight * (1 - nowDotScale) / 2, nWidth * nowDotScale, nHeight * nowDotScale);
 								} else {
-
-									_oContext.fillRect(nLeft + nWidth * (1 - nowDotScale) / 2,
-										_htOption.titleHeight + nTop + nHeight * (1 -
-											nowDotScale) / 2, nWidth * nowDotScale, nHeight *
-										nowDotScale);
+									// Draw dots
+									_oContext.fillRect(nLeft + nWidth * (1 - nowDotScale) / 2, _htOption.titleHeight + nTop + nHeight * (1 - nowDotScale) / 2, nWidth * nowDotScale, nHeight * nowDotScale);
 
 								}
 							}
@@ -1661,31 +1644,42 @@
 				}
 
 				if (_htOption.title) {
-					if(_htOption.titleBackgroundColor){
+					if (_htOption.titleBackgroundColor) {
 						_oContext.fillStyle = _htOption.titleBackgroundColor;
 						_oContext.fillRect(_htOption.quietZone, _htOption.quietZone, _htOption.width, _htOption.titleHeight);
 					}
 					_oContext.font = _htOption.titleFont;
 					_oContext.fillStyle = _htOption.colorDark;
-					if(_htOption.titleColor){
+					if (_htOption.titleColor) {
 						_oContext.fillStyle = _htOption.titleColor;
 					}
 					_oContext.textAlign = 'center';
-					_oContext.fillText(_htOption.title, this._elCanvas.width / 2, +_htOption.quietZone +
-						_htOption.titleTop);
+					_oContext.fillText(_htOption.title, this._elCanvas.width / 2, +_htOption.quietZone + _htOption.titleTop);
 				}
 
 				if (_htOption.subTitle) {
 					_oContext.font = _htOption.subTitleFont;
 					_oContext.fillStyle = _htOption.colorDark;
 
-					if(_htOption.subTitleColor){
+					if (_htOption.subTitleColor) {
 						_oContext.fillStyle = _htOption.subTitleColor;
 					}
 
-					_oContext.fillText(_htOption.subTitle, this._elCanvas.width / 2, +_htOption
-							.quietZone +
-						_htOption.subTitleTop);
+					_oContext.fillText(_htOption.subTitle, this._elCanvas.width / 2, +_htOption.quietZone + _htOption.subTitleTop);
+				}
+
+				if (_htOption.label) {
+					if (_htOption.labelBackgroundColor) {
+						_oContext.fillStyle = _htOption.labelBackgroundColor;
+						_oContext.fillRect(_htOption.quietZone, _htOption.height - _htOption.labelHeight, _htOption.width, _htOption.labelHeight);
+					}
+
+					_oContext.font = _htOption.labelFont;
+					_oContext.fillStyle = _htOption.colorDark;
+					if (_htOption.labelColor) {
+						_oContext.fillStyle = _htOption.labelColor;
+					}
+					_oContext.fillText(_htOption.label, this._elCanvas.width / 2, _htOption.height + _htOption.quietZone - _htOption.labelHeight / 2 + _htOption.marginTop);
 				}
 
 				function generateLogoImg(img) {
@@ -1733,7 +1727,7 @@
 					}
 
 					var imgContainerX = (_htOption.width + _htOption.quietZone * 2 - imgContainerW) / 2;
-					var imgContainerY = (_htOption.height + _htOption.titleHeight + _htOption.quietZone * 2 - imgContainerH) / 2;
+					var imgContainerY = (_htOption.height + _htOption.titleHeight - _htOption.labelHeight + _htOption.quietZone * 2 - imgContainerH) / 2;
 
 					var imgScale = Math.min(imgContainerW / nw, imgContainerH / nh);
 					var imgW = nw * imgScale;
@@ -1743,7 +1737,7 @@
 						imgContainerW = imgW;
 						imgContainerH = imgH;
 						imgContainerX = (_htOption.width + _htOption.quietZone * 2 - imgContainerW) / 2;
-						imgContainerY = (_htOption.height + _htOption.titleHeight + _htOption.quietZone * 2 - imgContainerH) / 2;
+						imgContainerY = (_htOption.height + _htOption.titleHeight - _htOption.labelHeight + _htOption.quietZone * 2 - imgContainerH) / 2;
 					}
 
 					// Did Not Use Transparent Logo Image
@@ -1809,9 +1803,9 @@
 							var xhr = new XMLHttpRequest();
 							xhr.open("GET", _htOption.logo, true);
 							xhr.responseType = "blob";
-							xhr.onload = function() {
+							xhr.onload = function () {
 								var reader = new FileReader();
-								reader.onloadend = function() {
+								reader.onloadend = function () {
 									_htOption.logo = reader.result;
 									setImgSrc(_htOption.logo);
 								}
@@ -1822,8 +1816,7 @@
 					} else {
 						setImgSrc(_htOption.logo);
 					}
-				}
-				else {
+				} else {
 					drawQuietZoneColor();
 					this._bIsPainted = true;
 					this.makeImage();
@@ -1967,7 +1960,7 @@
 			quietZoneColor: "rgba(0,0,0,0)",
 
 			title: "",
-			titleFont: "normal normal bold 16px Arial",
+			titleFont: "normal normal bold 16px Roboto",
 			titleColor: undefined, // if not set, the defaut is `colorDark`
 			titleBackgroundColor: undefined, // "#ffffff"
 			titleHeight: 0, // Title Height, Include subTitle
@@ -1977,6 +1970,14 @@
 			subTitleFont: "normal normal normal 14px Arial",
 			subTitleColor: undefined, // if not set, the defaut is `colorDark`
 			subTitleTop: 60, // draws y coordinates. default is 0
+
+
+			label: "",
+			labelFont: "normal normal bold 16px Roboto",
+			labelColor: undefined, // if not set, the defaut is `colorDark`
+			labelHeight: 0, // height, including subTitle. default is 0
+			marginTop: 0, // draws y coordinates. default is 0
+			labelBackgroundColor: undefined,
 
 			logo: undefined,
 			logoWidth: undefined,
@@ -2054,6 +2055,10 @@
 			this._htOption.titleHeight = 0;
 		}
 
+		if (!this._htOption.label) {
+			this._htOption.labelHeight = 0;
+		}
+
 		if (this._htOption.version < 0 || this._htOption.version > 40) {
 			console.warn("QR Code version '" + this._htOption.version + "' is invalidate, reset to 0")
 			this._htOption.version = 0;
@@ -2129,7 +2134,7 @@
 			this._htOption.backgroundImageAlpha = 1;
 		}
 
-		this._htOption.height = this._htOption.height + this._htOption.titleHeight;
+		this._htOption.height = this._htOption.height + this._htOption.titleHeight + this._htOption.labelHeight;
 		if (typeof el == "string") {
 			el = document.getElementById(el);
 		}
