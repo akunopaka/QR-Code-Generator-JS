@@ -1671,11 +1671,12 @@
 				if (_htOption.label) {
 					if (_htOption.labelBackgroundColor) {
 						_oContext.fillStyle = _htOption.labelBackgroundColor;
-						_oContext.fillRect(_htOption.quietZone, _htOption.height - _htOption.labelHeight, _htOption.width, _htOption.labelHeight);
+						_oContext.fillRect(_htOption.quietZone, _htOption.height  - _htOption.labelHeight + _htOption.quietZone, _htOption.width, _htOption.labelHeight);
 					}
 
 					_oContext.font = _htOption.labelFont;
 					_oContext.fillStyle = _htOption.colorDark;
+					_oContext.textAlign = 'center';
 					if (_htOption.labelColor) {
 						_oContext.fillStyle = _htOption.labelColor;
 					}
