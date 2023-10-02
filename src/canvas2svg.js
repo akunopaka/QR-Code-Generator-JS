@@ -774,15 +774,21 @@
     /**
      * adds a rectangle element
      */
-    ctx.prototype.fillRect = function (x, y, width, height) {
-        var rect, parent;
-        rect = this.__createElement("rect", {
+    ctx.prototype.fillRect = function (x, y, width, height, className) {
+        let rect, parent;
+        let params = {
             x : x,
             y : y,
             width : width,
             height : height,
             "shape-rendering":"crispEdges"
-        }, true);
+        }
+        // add class name if exists to params
+        if (className) {
+            params.class = className;
+        }
+
+        rect = this.__createElement("rect", params, true);
         parent = this.__closestGroupOrSvg();
         parent.appendChild(rect);
         this.__currentElement = rect;

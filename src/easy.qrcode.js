@@ -1476,33 +1476,70 @@
 				}
 			}
 
-			if (_htOption.backgroundImage) {
-
-				// Background Image
-				var bgImg = new Image();
+			const updateImageBG = () => {
+				bgImg.originalSrc = _htOption.backgroundImage;
+				bgImg.src = _htOption.backgroundImage;
 
 				bgImg.onload = function () {
 					_oContext.globalAlpha = 1;
-
 					_oContext.globalAlpha = _htOption.backgroundImageAlpha;
 					var imageSmoothingQuality = _oContext.imageSmoothingQuality;
 					var imageSmoothingEnabled = _oContext.imageSmoothingEnabled;
 					_oContext.imageSmoothingEnabled = true;
 					_oContext.imageSmoothingQuality = "high";
-					_oContext.drawImage(bgImg, 0, _htOption.titleHeight, _htOption.width + _htOption.quietZone * 2, _htOption.height + _htOption.quietZone * 2 - _htOption.titleHeight);
+					_oContext.drawImage(bgImg, 0, 0, _htOption.width + _htOption.quietZone * 2, _htOption.height + _htOption.quietZone * 2 + _htOption.titleHeight + _htOption.labelHeight);
 					_oContext.imageSmoothingEnabled = imageSmoothingEnabled;
 					_oContext.imageSmoothingQuality = imageSmoothingQuality;
 					_oContext.globalAlpha = 1;
 
-
 					drawQrcode.call(t, oQRCode);
 				}
+			};
+
+			if (_htOption.backgroundImage) {
+				// Background Image
+				var bgImg = new Image();
+
 				// bgImg.crossOrigin='Anonymous';
 				if (_htOption.crossOrigin != null) {
 					bgImg.crossOrigin = _htOption.crossOrigin;
 				}
-				bgImg.originalSrc = _htOption.backgroundImage;
-				bgImg.src = _htOption.backgroundImage;
+
+				// if _htOption.logo not base64 data, mean it is a url local(with relative path) or remote url with http or https,
+				// making base64 data for jpg and png or add svg inline
+				if (_htOption.backgroundImage.indexOf('data:image') != 0) {
+					// Check if it's an SVG by looking at the file extension
+					if (_htOption.backgroundImage.endsWith('.svg')) {
+						console.log('SVG background image detected');
+						// Fetch SVG content and set it as Data URL
+						fetch(_htOption.backgroundImage)
+							.then(response => response.text())
+							.then(data => {
+								_htOption.backgroundImage = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(data);
+								updateImageBG();
+							})
+							.catch(error => console.error(error));
+					} else {
+						// Handle JPEG and PNG
+						var xhr = new XMLHttpRequest();
+						xhr.open("GET", _htOption.backgroundImage, true);
+						xhr.responseType = "blob";
+						xhr.onload = function () {
+							var reader = new FileReader();
+							reader.onloadend = function () {
+								_htOption.backgroundImage = reader.result;
+								updateImageBG();
+							}
+							reader.readAsDataURL(xhr.response);
+						};
+						xhr.send();
+					}
+				} else {
+					bgImg.originalSrc = _htOption.backgroundImage;
+					bgImg.src = _htOption.backgroundImage;
+				}
+
+
 				// DoSomething
 			} else {
 				drawQrcode.call(t, oQRCode);
@@ -1520,9 +1557,7 @@
 
 						var bIsDark = oQRCode.isDark(row, col);
 
-						var eye = oQRCode.getEye(row,
-							col
-						); // { isDark: true/false, type: PO_TL, PI_TL, PO_TR, PI_TR, PO_BL, PI_BL };
+						var eye = oQRCode.getEye(row, col); // { isDark: true/false, type: PO_TL, PI_TL, PO_TR, PI_TR, PO_BL, PI_BL };
 
 						var nowDotScale = _htOption.dotScale;
 
@@ -1531,9 +1566,7 @@
 						var dColor;
 						var lColor;
 						if (eye) {
-							dColor = _htOption[eye.type] || _htOption[eye.type.substring(
-									0, 2)] ||
-								_htOption.colorDark;
+							dColor = _htOption[eye.type] || _htOption[eye.type.substring(0, 2)] || _htOption.colorDark;
 							lColor = _htOption.colorLight;
 						} else {
 							if (_htOption.backgroundImage) {
@@ -1542,18 +1575,15 @@
 								if (row == 6) {
 									// dColor = _htOption.timing_H || _htOption.timing || _htOption.colorDark;
 									if (_htOption.autoColor) {
-										dColor = _htOption.timing_H || _htOption.timing || _htOption
-											.autoColorDark;
+										dColor = _htOption.timing_H || _htOption.timing || _htOption.autoColorDark;
 										lColor = _htOption.autoColorLight;
 									} else {
-										dColor = _htOption.timing_H || _htOption.timing || _htOption
-											.colorDark;
+										dColor = _htOption.timing_H || _htOption.timing || _htOption.colorDark;
 									}
 								} else if (col == 6) {
 									// dColor = _htOption.timing_V || _htOption.timing || _htOption.colorDark;
 									if (_htOption.autoColor) {
-										dColor = _htOption.timing_V || _htOption.timing || _htOption
-											.autoColorDark;
+										dColor = _htOption.timing_V || _htOption.timing || _htOption.autoColorDark;
 										lColor = _htOption.autoColorLight;
 									} else {
 										dColor = _htOption.timing_V || _htOption.timing || _htOption.colorDark;
@@ -1569,8 +1599,7 @@
 
 							} else {
 								if (row == 6) {
-									dColor = _htOption.timing_H || _htOption.timing || _htOption
-										.colorDark;
+									dColor = _htOption.timing_H || _htOption.timing || _htOption.colorDark;
 								} else if (col == 6) {
 									dColor = _htOption.timing_V || _htOption.timing ||
 										_htOption.colorDark;
@@ -1580,10 +1609,10 @@
 								lColor = _htOption.colorLight;
 							}
 						}
-						_oContext.strokeStyle = bIsDark ? dColor :
-							lColor;
-						_oContext.fillStyle = bIsDark ? dColor :
-							lColor;
+						_oContext.strokeStyle = bIsDark ? dColor : lColor;
+						_oContext.fillStyle = bIsDark ? dColor : lColor;
+
+						let className = bIsDark ? "Dark" : "Light";
 
 						if (eye) {
 							if (eye.type == 'AO') {
@@ -1595,21 +1624,19 @@
 							}
 
 							if (_htOption.backgroundImage && _htOption.autoColor) {
-								dColor = ((eye.type == 'AO') ? _htOption.AI : _htOption.AO) ||
-									_htOption.autoColorDark;
+								dColor = ((eye.type == 'AO') ? _htOption.AI : _htOption.AO) || _htOption.autoColorDark;
 								lColor = _htOption.autoColorLight;
 							} else {
-								dColor = ((eye.type == 'AO') ? _htOption.AI : _htOption.AO) ||
-									dColor;
+								dColor = ((eye.type == 'AO') ? _htOption.AI : _htOption.AO) || dColor;
 							}
 
 							// Is eye
 							bIsDark = eye.isDark;
 
-							_oContext.fillRect( nLeft + nWidth * (1 - nowDotScale) / 2,
-												_htOption.titleHeight + nTop + nHeight * (1 - nowDotScale) / 2,
-												nWidth * nowDotScale,
-												nHeight * nowDotScale);
+							_oContext.fillRect(nLeft + nWidth * (1 - nowDotScale) / 2,
+								_htOption.titleHeight + nTop + nHeight * (1 - nowDotScale) / 2,
+								nWidth * nowDotScale,
+								nHeight * nowDotScale, "qrEyeRect");
 
 						} else {
 							if (row == 6) {
@@ -1624,14 +1651,17 @@
 
 								_oContext.fillRect(nLeft + nWidth * (1 - nowDotScale) / 2, _htOption.titleHeight + nTop + nHeight * (1 - nowDotScale) / 2, nWidth * nowDotScale, nHeight * nowDotScale);
 							} else {
-
-								if (_htOption.backgroundImage) {
-
-									_oContext.fillRect(nLeft + nWidth * (1 - nowDotScale) / 2, _htOption.titleHeight + nTop + nHeight * (1 - nowDotScale) / 2, nWidth * nowDotScale, nHeight * nowDotScale);
-								} else {
+								// TODO: can be more optimized
+								if(!bIsDark) {
 									// Draw dots
-									_oContext.fillRect(nLeft + nWidth * (1 - nowDotScale) / 2, _htOption.titleHeight + nTop + nHeight * (1 - nowDotScale) / 2, nWidth * nowDotScale, nHeight * nowDotScale);
+									if (_htOption.backgroundImage) {
+										className = "dataDotBG" + className;
+										_oContext.fillRect(nLeft + nWidth * (1 - nowDotScale) / 2, _htOption.titleHeight + nTop + nHeight * (1 - nowDotScale) / 2, nWidth * nowDotScale, nHeight * nowDotScale, className);
+									} else {
+										className = "dataDot" + className;
+										_oContext.fillRect(nLeft + nWidth * (1 - nowDotScale) / 2, _htOption.titleHeight + nTop + nHeight * (1 - nowDotScale) / 2, nWidth * nowDotScale, nHeight * nowDotScale, "dataDot");
 
+									}
 								}
 							}
 						}
@@ -1671,7 +1701,7 @@
 				if (_htOption.label) {
 					if (_htOption.labelBackgroundColor) {
 						_oContext.fillStyle = _htOption.labelBackgroundColor;
-						_oContext.fillRect(_htOption.quietZone, _htOption.height  - _htOption.labelHeight + _htOption.quietZone, _htOption.width, _htOption.labelHeight);
+						_oContext.fillRect(_htOption.quietZone, _htOption.height - _htOption.labelHeight + _htOption.quietZone, _htOption.width, _htOption.labelHeight);
 					}
 
 					_oContext.font = _htOption.labelFont;
