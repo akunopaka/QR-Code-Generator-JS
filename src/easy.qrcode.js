@@ -1652,7 +1652,7 @@
 								_oContext.fillRect(nLeft + nWidth * (1 - nowDotScale) / 2, _htOption.titleHeight + nTop + nHeight * (1 - nowDotScale) / 2, nWidth * nowDotScale, nHeight * nowDotScale);
 							} else {
 								// TODO: can be more optimized
-								if(!bIsDark) {
+								// if(!bIsDark) {
 									// Draw dots
 									if (_htOption.backgroundImage) {
 										className = "dataDotBG" + className;
@@ -1662,7 +1662,7 @@
 										_oContext.fillRect(nLeft + nWidth * (1 - nowDotScale) / 2, _htOption.titleHeight + nTop + nHeight * (1 - nowDotScale) / 2, nWidth * nowDotScale, nHeight * nowDotScale, "dataDot");
 
 									}
-								}
+								// }
 							}
 						}
 

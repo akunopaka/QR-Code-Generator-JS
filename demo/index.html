@@ -74,12 +74,12 @@
 
 		width: 512,
 		height: 512,
-		colorDark: "#d56310", // BG
-		colorLight: "#260101", // PIXEL
+		colorDark: "rgba(12,0,0,0.54)", // BG
+		colorLight: "#bcc53b", // PIXEL
 		correctLevel: QRCode.CorrectLevel.H, // L, M, Q, H
 
 		// ====== dotScale
-		dotScale: 0.8, // For body block, must be greater than 0, less than or equal to 1. default is 1
+		dotScale: 1, // For body block, must be greater than 0, less than or equal to 1. default is 1
 
 		dotScaleTiming: 0.8, // Dafault for timing block , must be greater than 0, less than or equal to 1. default is 1
 		// dotScaleTiming_H: undefined, // For horizontal timing block, must be greater than 0, less than or equal to 1. default is 1
@@ -90,8 +90,8 @@
 		dotScaleAI: 0.9, // For alignment inner block, must be greater than 0, less than or equal to 1. default is 1
 
 		// Canvas
-		canvasBorderRadius: 8,
-		canvasColor: "#f6f5f5",
+		canvasBorderRadius: 18,
+		canvasColor: "rgba(155,0,233,0.15)",
 
 		// ====== Quiet Zone
 		quietZone: 10,
@@ -105,7 +105,7 @@
 		// logoHeight: 90, // fixed logo height. default is `heigth/3.5`
 		logoMaxWidth: 90, // Maximum logo width. if set will ignore `logoWidth` value
 		// logoMaxHeight: undefined, // Maximum logo height. if set will ignore `logoHeight` value
-		logoBackgroundColor: '#884700', // Logo backgroud color, Invalid when `logBgTransparent` is true; default is '#ffffff'
+		logoBackgroundColor: 'rgba(87,83,67,0.8)', // Logo backgroud color, Invalid when `logBgTransparent` is true; default is '#ffffff'
 		// logoBackgroundTransparent: true, // Whether use transparent image, default is false
 		logoPadding: 8, // default is 0
 		logoBackgroundRadius: 15, // default is 0
@@ -113,9 +113,9 @@
 
 		// ====== Backgroud Image
 		backgroundImage: '../demo/img/bg/M_BM22.jpg', // Background Image
-		backgroundImage: '../demo/img/bg/F_023.svg', // Background Image
-		backgroundImageAlpha: 0.6, // Background image transparency, value between 0 and 1. default is 1.
-		autoColor: true, // Automatic color adjustment(for data block)
+		// backgroundImage: '../demo/img/bg/F_023.svg', // Background Image
+		backgroundImageAlpha: 0.2, // Background image transparency, value between 0 and 1. default is 1.
+		// autoColor: true, // Automatic color adjustment(for data block)
 		autoColorDark: "rgba(0,0,0,0.87)", // Automatic color: dark CSS color
 		autoColorLight: "rgba(255,255,255,0.9)", // Automatic color: light CSS color
 
@@ -157,9 +157,9 @@
 		// ====== Bottom Label
 		label: 'QR Label', // content
 		labelFont: "normal normal bold 32px Roboto", // font. default is "16px Arial"
-		labelColor: "rgba(253,253,253,0.78)", // color. default is "#000"
+		labelColor: "rgb(63,12,75)", // color. default is "#000"
 		labelHeight: 64, // height, including subTitle. default is 0
-		marginTop: 24,
+		marginTop: 20,
 		// labelBackgroundColor: "#ffffff", // background color. default is "#fff"
 
 
